@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -29,9 +31,7 @@ jobs:
         vulkan-use-cache: true
 
     - name: Install CMake
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.31.x'
+      uses: lukka/get-cmake@latest
 
     - name: Configure CMake
       run: cmake -B build -S .
