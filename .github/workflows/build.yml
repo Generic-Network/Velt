@@ -23,11 +23,18 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install Vulkan SDK (Ubuntu)
+    - name: Install Dependencies (Ubuntu)
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
+        # Vulkan SDK components
         sudo apt-get install -y libvulkan-dev vulkan-tools vulkan-utility-libraries-dev spirv-tools
+        # SDL3 build dependencies (X11 and other libraries)
+        sudo apt-get install -y libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxinerama-dev libxxf86vm-dev libxss-dev
+        # OpenGL libraries for SDL3
+        sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev libegl1-mesa-dev
+        # Other SDL3 dependencies
+        sudo apt-get install -y libasound2-dev libpulse-dev libudev-dev libdbus-1-dev
 
     - name: Install Vulkan SDK (macOS)
       if: runner.os == 'macOS'
