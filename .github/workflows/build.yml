@@ -26,15 +26,13 @@ jobs:
     - name: Install Vulkan SDK (Ubuntu)
       if: runner.os == 'Linux'
       run: |
-        wget -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
-        sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list https://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
         sudo apt-get update
-        sudo apt-get install -y vulkan-sdk
+        sudo apt-get install -y libvulkan-dev vulkan-tools vulkan-validationlayers-dev spirv-tools
 
     - name: Install Vulkan SDK (macOS)
       if: runner.os == 'macOS'
       run: |
-        brew install --cask vulkan-sdk
+        brew install molten-vk vulkan-headers vulkan-loader
 
     - name: Install Vulkan SDK (Windows)
       if: runner.os == 'Windows'
@@ -45,7 +43,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
+        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ noble main'
         sudo apt-get update
         sudo apt-get install -y cmake
 
