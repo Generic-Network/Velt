@@ -30,8 +30,21 @@ jobs:
         vulkan-components: Vulkan-Headers, Vulkan-Loader
         vulkan-use-cache: true
 
-    - name: Install CMake
-      uses: lukka/get-cmake@latest
+    - name: Install CMake (Ubuntu)
+      if: runner.os == 'Linux'
+      run: |
+        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+        sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
+        sudo apt-get update
+        sudo apt-get install -y cmake
+
+    - name: Install CMake (macOS)
+      if: runner.os == 'macOS'
+      run: brew install cmake
+
+    - name: Install CMake (Windows)
+      if: runner.os == 'Windows'
+      run: choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
 
     - name: Configure CMake
       run: cmake -B build -S .
