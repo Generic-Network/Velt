@@ -23,14 +23,23 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install Vulkan SDK
-      uses: jakoch/install-vulkan-sdk-action@v1.0.0
-      with:
-        vulkan_version: 1.4.328.1
-        optional_components: com.lunarg.vulkan.vma
-        install_runtime: true
-        cache: true
-        stripdown: true
+    - name: Install Vulkan SDK (Ubuntu)
+      if: runner.os == 'Linux'
+      run: |
+        wget -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
+        sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list https://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
+        sudo apt-get update
+        sudo apt-get install -y vulkan-sdk
+
+    - name: Install Vulkan SDK (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew install --cask vulkan-sdk
+
+    - name: Install Vulkan SDK (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        choco install vulkan-sdk -y
 
     - name: Install CMake (Ubuntu)
       if: runner.os == 'Linux'
